@@ -1,0 +1,168 @@
+문제 :
+
+  0~9 사이의 정수 n개를 빠짐없이 한 번씩만 써서 두 개의 자연수를 만들 수 있습니다.
+  예를 들어, 숫자 목록 1, 2, 4, 7, 9가 있다면 (149, 27), (124, 79), (1, 9742)… 처럼 많은 자연수 조합이 가능합니다.
+  이렇게 만든 두 개의 자연수의 합이 최소가 되는 쌍을 찾아 그 합을 구하세요.
+
+  조건
+  1. 입력받는 숫자의 개수는 2≤n≤18 사이입니다.
+  2. 당연한 이야기지만, 숫자를 조합할 때 맨 앞자리에 0이 오게 해서는 안됩니다.
+  3. 입력받은 숫자로 자연수를 두 개 만들 수 없는 경우도 있습니다. 이 때의 결과값은 -1이 됩니다.
+  4. 숫자를 입력받는 방식은 어떻게 구현해도 상관없습니다.
+    4-1. 외부 파일으로부터 읽어오기
+    4-2. 콘솔 터미널에서 직접 입력받기
+    4-3. 소스 내 하드코딩(!!)
+    
+  입력
+  한 줄은 숫자 목록 하나 입니다. 각 숫자는 콤마 또는 공백으로 구분되어 있습니다. 다음은 입력 예입니다.
+  1, 2, 4, 7, 9
+  1, 2, 3, 1, 2, 3
+  1, 2, 3, 4, 5, 6, 7
+  0, 1, 2, 3, 0, 1, 2, 3, 4
+  0, 0, 1
+  
+  출력
+  숫자 목록을 이용해 만든 두 자연수의 합의 최솟값을 각 줄에 하나씩 출력합니다. 위 예의 출력은 아래와 같습니다.
+  176
+  246
+  1603
+  11257
+  -1
+
+  출처) 사이냅소프트 채용퀴즈
+
+  아래 정답란에는..
+  숫자 목록 0, 0, 1, 8, 2, 2, 8, 9, 0, 3, 4, 0, 0을 이용해 만든 두 자연수 합의 최솟값을 구하여 제출하세요.
+
+정답 : 
+package quiz;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class Quiz2 {
+
+	public static void main(String[] args) {
+
+		List<Integer> list1 = new ArrayList<>(Arrays.asList(0, 0, 1, 1));
+    
+    // 만약 입력받은 값이 2 이상, 18 이하가 아니라면 
+		int num = list1.size();
+		boolean isT = (num >= 2) & (num <= 18);
+		if (isT == false) {
+			System.out.println("오류");
+			return;
+		}
+
+		Collections.sort(list1); // 입력받은 List를 오름차순으로 정렬
+
+		System.out.println("입력받은 값 : " + list1);
+		System.out.println("리스트의 사이즈 : " + list1.size());
+		List<Integer> divide1 = new ArrayList<>(); // 입력받은 List를 2개의 배열로 나누기 위해서 새로운 리스트를 생성
+		List<Integer> divide2 = new ArrayList<>(); // 입력받은 List를 2개의 배열로 나누기 위해서 새로운 리스트를 생성
+		int one; // divide1 리스트의 배열에서 조합된 숫자를 저장할 변수
+		int two; // divide2 리스트의 배열에서 조합된 숫자를 저장할 변수
+  
+		for (int x = 0; x < list1.size(); x++) {
+			Boolean y = (x % 2 == 0) ? divide1.add(list1.get(x)) : divide2.add(list1.get(x));
+		}
+
+    // 만약, 분류한 2개의 배열 중 하나라도 '0'만 포함된 값이 있을 경우
+		List<Integer> test1 = new ArrayList<>(divide1);
+		List<Integer> test2 = new ArrayList<>(divide2);
+		List<Integer> compare = new ArrayList<>();
+		test1.removeIf(n -> n == 0);
+		test2.removeIf(n -> n == 0);
+  
+		if (test1.equals(compare)) {
+			System.out.println(-1);
+			return;
+		} else if (test2.equals(compare)) {
+			System.out.println(-1);
+			return;
+		}
+
+		System.out.println("분리된 배열 1 : " + divide1 + ", 분리된 배열 2 : " + divide2);
+    
+    // divide1 리스트에서 0이 아닌 수가 시작되는 index 번호 찾기
+		int count1 = 0;
+		for (int x = 0; x < divide1.size(); x++) {
+			if (divide1.get(x) != 0) {
+				count1 = x;
+				break;
+			}
+		}
+		System.out.println("1번째 배열에서 0이 아닌 수가 시작되는 index = " + count1);
+    
+		if (count1 != 0) { // 만약 찾은 count1 값이 0이 아니라면(배열에서 가장 작은 수가 0이라면)
+
+			int change1 = divide1.get(count1);
+
+			System.out.println("변경 전 list = " + divide1);
+			divide1.remove(change1);
+			divide1.add(0, change1);
+			System.out.println("변경 후 list = " + divide1);
+
+			String a = "";
+
+			for (int x : divide1) {
+				a += String.valueOf(x);
+			}
+			System.out.println("1번 배열을 숫자로 변환 " + a);
+
+			one = Integer.parseInt(a);
+		} else { // 만약 찾은 count1 값이 0이라면(배열에서 가장 작은 수가 0이 아니라면) 
+			String a = "";
+
+			for (int x : divide1) {
+				a += String.valueOf(x);
+			}
+			System.out.println("1번 배열을 숫자로 변환 " + a);
+
+			one = Integer.parseInt(a);
+		}
+
+		int count2 = 0;
+		for (int x = 0; x < divide2.size(); x++) {
+			if (divide2.get(x) != 0) {
+				count2 = x;
+				break;
+			}
+		}
+		System.out.println("2번째 배열에서 0이 아닌 수가 시작되는 index = " + count2);
+
+		if (count2 != 0) {  // 만약 찾은 count2 값이 0이 아니라면(배열에서 가장 작은 수가 0이라면)
+
+			int change2 = divide2.get(count2);
+
+			System.out.println("변경 전 list = " + divide2);
+			divide2.remove(change2);
+			divide2.add(0, change2);
+			System.out.println("변경 후 list = " + divide2);
+
+			String b = "";
+			for (int x : divide2) {
+
+				b += String.valueOf(x);
+			}
+			System.out.println("2번 배열을 숫자로 변환 " + b);
+
+			two = Integer.parseInt(b);
+		} else {  // 만약 찾은 count2 값이 0이라면(배열에서 가장 작은 수가 0이 아니라면) 
+			String b = "";
+			for (int x : divide2) {
+
+				b += String.valueOf(x);
+			}
+			System.out.println("2번 배열을 숫자로 변환 " + b);
+
+			two = Integer.parseInt(b);
+		}
+
+		System.out.println("답 : " + (one + two));
+
+	}
+
+}
