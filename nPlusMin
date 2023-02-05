@@ -38,131 +38,135 @@
 package quiz;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class Quiz2 {
 
 	public static void main(String[] args) {
 
-		List<Integer> list1 = new ArrayList<>(Arrays.asList(0, 0, 1, 1));
-    
-    // 만약 입력받은 값이 2 이상, 18 이하가 아니라면 
-		int num = list1.size();
-		boolean isT = (num >= 2) & (num <= 18);
-		if (isT == false) {
-			System.out.println("오류");
+		Quiz2 q = new Quiz2();
+
+		List<Integer> list = q.stringToList();
+		
+		if(list == null) {
+			return;
+		}
+		// 입력받은 List를 2개의 배열로 나누기 위해서 새로운 리스트를 생성
+		List<Integer> divide1 = new ArrayList<>();
+		List<Integer> divide2 = new ArrayList<>();
+
+		// 나눈 리스트의 배열에서 조합된 숫자를 저장할 변수
+		int one;
+		int two;
+
+		// 크기 비교
+		if (q.checkSize(list) == false) {
+			System.out.println("크기 오류");
 			return;
 		}
 
-		Collections.sort(list1); // 입력받은 List를 오름차순으로 정렬
+		Collections.sort(list); // 입력받은 List를 오름차순으로 정렬
 
-		System.out.println("입력받은 값 : " + list1);
-		System.out.println("리스트의 사이즈 : " + list1.size());
-		List<Integer> divide1 = new ArrayList<>(); // 입력받은 List를 2개의 배열로 나누기 위해서 새로운 리스트를 생성
-		List<Integer> divide2 = new ArrayList<>(); // 입력받은 List를 2개의 배열로 나누기 위해서 새로운 리스트를 생성
-		int one; // divide1 리스트의 배열에서 조합된 숫자를 저장할 변수
-		int two; // divide2 리스트의 배열에서 조합된 숫자를 저장할 변수
-  
-		for (int x = 0; x < list1.size(); x++) {
-			Boolean y = (x % 2 == 0) ? divide1.add(list1.get(x)) : divide2.add(list1.get(x));
+		// 리스트의 값들을 각각 리스트에 저장
+		for (int x = 0; x < list.size(); x++) {
+			Boolean y = (x % 2 == 0) ? divide1.add(list.get(x)) : divide2.add(list.get(x));
 		}
 
-    // 만약, 분류한 2개의 배열 중 하나라도 '0'만 포함된 값이 있을 경우
-		List<Integer> test1 = new ArrayList<>(divide1);
-		List<Integer> test2 = new ArrayList<>(divide2);
-		List<Integer> compare = new ArrayList<>();
-		test1.removeIf(n -> n == 0);
-		test2.removeIf(n -> n == 0);
-  
-		if (test1.equals(compare)) {
-			System.out.println(-1);
-			return;
-		} else if (test2.equals(compare)) {
+		// list가 0만 포함하고 있는지 검사.
+		if ((q.check0(divide1) == false) || (q.check0(divide2) == false)) {
 			System.out.println(-1);
 			return;
 		}
 
-		System.out.println("분리된 배열 1 : " + divide1 + ", 분리된 배열 2 : " + divide2);
-    
-    // divide1 리스트에서 0이 아닌 수가 시작되는 index 번호 찾기
-		int count1 = 0;
-		for (int x = 0; x < divide1.size(); x++) {
-			if (divide1.get(x) != 0) {
-				count1 = x;
-				break;
-			}
-		}
-		System.out.println("1번째 배열에서 0이 아닌 수가 시작되는 index = " + count1);
-    
-		if (count1 != 0) { // 만약 찾은 count1 값이 0이 아니라면(배열에서 가장 작은 수가 0이라면)
-
-			int change1 = divide1.get(count1);
-
-			System.out.println("변경 전 list = " + divide1);
-			divide1.remove(change1);
-			divide1.add(0, change1);
-			System.out.println("변경 후 list = " + divide1);
-
-			String a = "";
-
-			for (int x : divide1) {
-				a += String.valueOf(x);
-			}
-			System.out.println("1번 배열을 숫자로 변환 " + a);
-
-			one = Integer.parseInt(a);
-		} else { // 만약 찾은 count1 값이 0이라면(배열에서 가장 작은 수가 0이 아니라면) 
-			String a = "";
-
-			for (int x : divide1) {
-				a += String.valueOf(x);
-			}
-			System.out.println("1번 배열을 숫자로 변환 " + a);
-
-			one = Integer.parseInt(a);
-		}
-
-		int count2 = 0;
-		for (int x = 0; x < divide2.size(); x++) {
-			if (divide2.get(x) != 0) {
-				count2 = x;
-				break;
-			}
-		}
-		System.out.println("2번째 배열에서 0이 아닌 수가 시작되는 index = " + count2);
-
-		if (count2 != 0) {  // 만약 찾은 count2 값이 0이 아니라면(배열에서 가장 작은 수가 0이라면)
-
-			int change2 = divide2.get(count2);
-
-			System.out.println("변경 전 list = " + divide2);
-			divide2.remove(change2);
-			divide2.add(0, change2);
-			System.out.println("변경 후 list = " + divide2);
-
-			String b = "";
-			for (int x : divide2) {
-
-				b += String.valueOf(x);
-			}
-			System.out.println("2번 배열을 숫자로 변환 " + b);
-
-			two = Integer.parseInt(b);
-		} else {  // 만약 찾은 count2 값이 0이라면(배열에서 가장 작은 수가 0이 아니라면) 
-			String b = "";
-			for (int x : divide2) {
-
-				b += String.valueOf(x);
-			}
-			System.out.println("2번 배열을 숫자로 변환 " + b);
-
-			two = Integer.parseInt(b);
-		}
-
-		System.out.println("답 : " + (one + two));
+		// 두 개의 list의 값 중 최솟값을 구하기
+		System.out.println(q.plusNum(divide1, divide2));
 
 	}
 
+	// list의 크기가 맞는지 확인하는 메서드
+	private boolean checkSize(List<Integer> list) {
+		int num = list.size();
+		boolean isT = (num >= 2) & (num <= 18);
+		if (isT == false) {
+			return false;
+		}
+		return true;
+	}
+
+	// 0만 포함하고 있는 리스트 검사하는 메서드
+	private boolean check0(List<Integer> list) {
+		List<Integer> test1 = new ArrayList<>(list);
+
+		List<Integer> compare = new ArrayList<>();
+
+		test1.removeIf(n -> (n == 0));
+
+		if (test1.equals(compare)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// list의 값을 하나의 자연수로 바꿔주는 메서드
+	private int listToInt(List<Integer> list) {
+		int result = 0;
+		int count = 0;
+
+		for (int x = 0; x < list.size(); x++) {
+			if (list.get(x) != 0) {
+				count = x;
+				break;
+			}
+		}
+
+		if (count != 0) {
+			int change = list.get(count);
+			list.remove(count);
+			list.add(0, change);
+			String a = "";
+
+			for (int x : list) {
+				a += String.valueOf(x);
+			}
+			result = Integer.parseInt(a);
+
+		} else {
+			String a = "";
+			for (int x : list) {
+				a += String.valueOf(x);
+			}
+			result = Integer.parseInt(a);
+		}
+
+		return result;
+	}
+	
+	// 입력받은 list 2개의 값을 각각 2개의 자연수로 바꾼 뒤 더하는 메서드
+	private int plusNum(List<Integer> list1, List<Integer> list2) {
+		return this.listToInt(list1) + this.listToInt(list2);
+	}
+	
+	private List<Integer> stringToList (){
+
+		Scanner sc = new Scanner(System.in);
+		String input = sc.next();
+		String[] inputs = input.split(",");
+		List<Integer> toInt  = new ArrayList<>();
+		
+		try {
+			for(String x : inputs) {
+				int a = Integer.parseInt(x);
+				toInt.add(a);
+			}
+		} catch (Exception e) {
+			System.out.println("정수와 ','를 이용하여 입력해주세요.");
+			return null;
+		}
+		
+		return toInt;
+	}
+	
 }
