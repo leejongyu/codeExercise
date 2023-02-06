@@ -1,0 +1,83 @@
+EOF : End of File의 약자로, 더 이상 읽을 수 있는 데이터가 없음
+
+주로 입력값을 얼마나 받을지 나타나지 않은 경우 사용
+
+1 : Scanner의 경우 : scanner객체.hasNext() 메서드 사용 ==> 입력된 값이 있으면 True, 없으면 False를 return
+  Scanner sc = new Scanner(System.in);
+  String s;
+  
+  while(sc.hasNext()){
+    // 입력된 값이 있을 때 실행될 코드
+  }
+
+2 : bufferedStream을 사용할 경우 : 입력된 값이 없으면 null을 return 하기 때문에, null이 될 때 까지 사용
+
+  BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+  String s = "";
+
+  while((input = br.readLine()) != null) {
+    // 입력된 값이 있을 때 실행될 코드
+  }
+  
+  
+문제 : 
+  두 정수 A와 B를 입력받은 다음, A+B를 출력하는 프로그램을 작성하시오.
+
+  입력
+  
+  입력은 여러 개의 테스트 케이스로 이루어져 있다.
+
+  각 테스트 케이스는 한 줄로 이루어져 있으며, 각 줄에 A와 B가 주어진다. (0 < A, B < 10)
+
+정답 :
+
+  import java.util.ArrayList;
+  import java.util.List;
+  import java.util.Scanner;
+
+  public class Quiz {
+
+    public static void main(String[] args) {
+      Scanner sc = new Scanner(System.in);
+      String input;
+      Quiz q = new Quiz();
+
+      while (sc.hasNext()) { // scanner를 사용해서 .hasNext() 드메서드를 이용해서 EOF 사
+        try {
+
+          input = sc.nextLine();
+          int result = q.input(input);
+
+          System.out.println(result);
+
+          if(input == null) {
+            return;
+          }
+        } catch (Exception e) {
+          return;
+        }
+      }
+
+    }
+
+    private int input(String input) {
+
+      String inputs[] = input.split("\\s");
+      List<Integer> numbers = new ArrayList<>();
+
+      for (String x : inputs) {
+        int a = Integer.parseInt(x);
+        numbers.add(a);
+      }
+
+      int a = 0;
+      int b = 0;
+
+      for (int x = 0; x < numbers.size(); x++) {
+        int y = (x % 2 == 0) ? (a = numbers.get(x)) : (b = numbers.get(x));
+      }
+
+      return a + b;
+    }
+
+  }
