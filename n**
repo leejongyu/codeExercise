@@ -1,0 +1,27 @@
+int[] numlist = 정수의 배열
+int n = 랜덤한 정수 1개
+
+numlist에 n의 배수가 있다면, 그 값을 뺀 배열을 return
+
+import java.util.*; // 왜 리스트가 안될까... 한참을 생각했었는데 정답은 import를 안해서..
+class Solution {
+    public int[] solution(int n, int[] numlist) {
+        int[] answer = {};
+        
+        List<Integer> before = new ArrayList<>();
+        
+        for(int x : numlist){
+            if(x%n == 0){
+                before.add(x);
+            }
+        }
+        
+        answer = new int[before.size()];
+        
+        for(int i =0; i<before.size(); i++){
+            answer[i] = before.get(i);
+        }
+        
+        return answer;
+    }
+}
