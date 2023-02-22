@@ -1,0 +1,35 @@
+Q : 문자열 s가 매개변수로 주어집니다. s에서 한 번만 등장하는 문자를 사전 순으로 정렬한 문자열을 return 하도록 solution 함수를 완성해보세요. 
+    한 번만 등장하는 문자가 없을 경우 빈 문자열을 return 합니다.
+
+A :
+import java.util.*;
+
+class Solution {
+    public String solution(String s) {
+        String answer = "";
+        
+        // 중복되는 단어를 고르기
+        String[] inputs = s.split("");
+        for(String x : inputs){
+            int count = 0;
+            for(int i =0; i<inputs.length; i++){
+                if(x.equals(inputs[i])){
+                    count += 1;
+                }
+            }
+            if(count == 1){
+                answer += x;
+            }
+        }
+        
+        // 사전 순서대로 정렬하기
+       char[] forSort = answer.toCharArray();
+        answer = "";
+        Arrays.sort(forSort);
+        
+        answer = new String(forSort);
+        
+        
+        return answer;
+    }
+}
