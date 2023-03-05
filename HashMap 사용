@@ -48,7 +48,7 @@ class Solution {
         }
 
 이 과정을 
-> hash.put(player, hash.getOrDefault(player, 0) + 1); 이렇게 하면 짧고 간결하게 작성할 수 있다고 한다.
+> hash.put(s, hash.getOrDefault(s, 0) + 1); 이렇게 하면 짧고 간결하게 작성할 수 있다고 한다.
 
 HashMap의 getOrDefault(Object key, V defaultValue) 메소드는 해당 key에 매핑된 value를 반환한다. 
 만약 해당 key에 매핑된 value가 없다면, defaultValue를 반환합니다.
