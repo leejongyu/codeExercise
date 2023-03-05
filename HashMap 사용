@@ -1,0 +1,56 @@
+Q( 프로그래머스 : 완주하지 못한 선수) 
+수많은 마라톤 선수들이 마라톤에 참여하였습니다. 
+단 한 명의 선수를 제외하고는 모든 선수가 마라톤을 완주하였습니다.
+마라톤에 참여한 선수들의 이름이 담긴 배열 participant와 완주한 선수들의 이름이 담긴 배열 completion이 주어질 때, 
+완주하지 못한 선수의 이름을 return 하도록 solution 함수를 작성해주세요.
+
+A:
+처음에는 participant의 값을 ArrayList에 저장하고, completion에 저장된 값들을 for-each를 사용하여 ArrayList.remave(com)을 했다.
+채점 항목에 효율성이 있었는데, ArrayList와 LinkedList에서 계속 효율성 문제가 발생하였다.
+
+해당 이슈를 해결하고자 검색했더니 Map을 사용하면 된다고 해서 HashMap을 이용하여 문제를 해결하였다.
+
+class Solution {
+    public String solution(String[] participant, String[] completion) {
+        String answer = "";
+        
+        HashMap<String,Integer> map = new HashMap<>();
+        
+        for(String s : participant){ 
+            if(map.containsKey(s)){
+                map.put(s, map.get(s) +1); 
+            }else{
+                map.put(s,1);
+            }
+        }
+        
+        for(String s: completion){
+            map.put(s, map.get(s)-1);
+        }
+        
+        for(String s: map.keySet()){
+            if(map.get(s) != 0){
+                answer= s;
+            }
+        }
+        
+        return answer;
+    }
+}
+
+여담 : 
+        for(String s : participant){ 
+            if(map.containsKey(s)){
+                map.put(s, map.get(s) +1); 
+            }else{
+                map.put(s,1);
+            }
+        }
+
+이 과정을 
+> hash.put(player, hash.getOrDefault(player, 0) + 1); 이렇게 하면 짧고 간결하게 작성할 수 있다고 한다.
+
+HashMap의 getOrDefault(Object key, V defaultValue) 메소드는 해당 key에 매핑된 value를 반환한다. 
+만약 해당 key에 매핑된 value가 없다면, defaultValue를 반환합니다.
+
+그래서 if문으로 Map에 포함되어있으면 찾아서 +1 을 하는 코드를 getOrDefault()를 사용하여 더 간결하게 만들 수 있게 된다고 한다.
