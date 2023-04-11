@@ -1,0 +1,18 @@
+삼각형의 변 2개의 값이 주어졌을 때, 나머지 변이 될 수 있는 경우는 몇가지인가? 
+
+import java.util.*;
+
+class Solution {
+    public int solution(int[] sides) {
+        int answer = 0;
+        
+        Arrays.sort(sides);
+        
+        int longS = sides[1];
+        int shortS = sides[0];
+        
+        answer = shortS * 2 - 1; 
+        
+        return answer;
+    }
+}
